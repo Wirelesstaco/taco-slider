@@ -1,26 +1,29 @@
-$(function() {
-	var transitionSpeed = 500;
-	var slideWidth = $('.testCarousel .slides li:first').width();
+(function ( $ ) {
+	$.fn.tacoSlider = function(){
+		var thisSelector = this.selector;
+		var transitionSpeed = 500;
 
-	var isAnimating =false;
-	var slidePosition = 0;
-	var slideCount = $(".testCarousel .slides ul li").length;
+		var slideWidth = $(thisSelector +" .slides li:first").width();
+
+		var isAnimating =false;
+		var slidePosition = 0;
+		var slideCount = $(thisSelector +"  .slides ul li").length;
 
 
 	//Previous Slide
 	
-	$( ".testCarousel a.prev" ).click(function(e) {
+	$( thisSelector +" a.prev" ).click(function(e) {
 		e.preventDefault();
 		
-			moveSlide(-1);
+		moveSlide(-1);
 		
 	});
 	//Next Slide
-	$( ".testCarousel a.next" ).click(function(e) {
+	$( thisSelector +" a.next" ).click(function(e) {
 		e.preventDefault();
 		
 
-			moveSlide(1);
+		moveSlide(1);
 		
 	});
 
@@ -31,7 +34,7 @@ $(function() {
 	//Slide difference is the amount of slides in between the current slide.
 	function moveSlide(slideDifference){
 		if(!isAnimating){
-		isAnimating =true;
+			isAnimating =true;
 		//Update Pagination button
 		slidePosition = mod(slideCount,slidePosition + slideDifference);
 
@@ -41,11 +44,11 @@ $(function() {
 					//Move last slide to first Div
 					console.log(slideDifference);
 					for(var i = 0; i < Math.abs(slideDifference);i++){	
-						$('.testCarousel .slides li:last').insertBefore('.testCarousel .slides li:first'); // Fix for pagination
+						$(thisSelector +" .slides li:last").insertBefore(thisSelector +"  .slides li:first"); // Fix for pagination
 
 
 					}
-					$(".testCarousel .slides ul").css({
+					$(thisSelector +" .slides ul").css({
 						//Set slide to second Position
 						left:-slideWidth * Math.abs(slideDifference)+"px"
 					});
@@ -53,9 +56,8 @@ $(function() {
 
 				}
 
-
 				
-				$(".testCarousel .slides ul").animate({
+				$(thisSelector +" .slides ul").animate({
 
 					left:"-=" + slideWidth * slideDifference+ "px"
 				},transitionSpeed ,function(e){
@@ -66,10 +68,10 @@ $(function() {
 				if(slideDifference > 0){
 					for(var i = 0; i < Math.abs(slideDifference);i++){	
 							// Move first slide to the last Div
-							$('.testCarousel .slides li:first').insertAfter('.testCarousel .slides li:last'); //FIx for pagination
+							$(thisSelector +" .slides li:first").insertAfter(thisSelector +" .slides li:last"); //FIx for pagination
 						}
 
-						$(".testCarousel .slides ul").css({
+						$(thisSelector +" .slides ul").css({
 						//Set slide to second Position
 						left:0 +"px"
 					});
@@ -81,17 +83,17 @@ $(function() {
 			}
 		}
 
-			function updatePagination(position){
+		function updatePagination(position){
 
-				position ++;
+			position ++;
 		//Remove all selected Bulletes
-		$(".pagination a").removeClass("selected");
+		$(thisSelector +" .pagination a").removeClass("selected");
 
-		$( ".testCarousel .pagination a:nth-child("+position+")").addClass("selected");
+		$( thisSelector +" .pagination a:nth-child("+position+")").addClass("selected");
 	}
 
 	//Pagination
-	$( ".testCarousel .pagination a" ).click(function(e) {
+	$( thisSelector +" .pagination a" ).click(function(e) {
 		e.preventDefault();
 		var slideDifference = $(this).index()  - slidePosition;
 			//console.log(slideDifference)
@@ -99,5 +101,13 @@ $(function() {
 
 
 		});
+};
 
+
+}( jQuery ));
+
+$(document).ready(function(){
+	$('.slider1').tacoSlider();
+	$('.slider2').tacoSlider();
 });
+
